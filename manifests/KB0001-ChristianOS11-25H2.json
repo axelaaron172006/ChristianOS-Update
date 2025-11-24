@@ -1,0 +1,30 @@
+{
+  "updateName": "ChristianOS Update KB0001",
+  "version": "1.0.0",
+  "type": "CAB",
+  "sha256": "AUTO_GENERATE",
+  "compatibility": {
+    "ChristianOS11": ["24H2", "25H2"]
+  },
+  "releaseDate": "2025-11-24",
+  "author": "MicroChristian Corporation",
+  "description": "Actualización de calidad para ChristianOS 11 25H2 en sistemas x64.",
+  "files": [
+    {
+      "name": "KB0001-11-24H2.cab",
+      "path": "./packages/KB0001-11-24H2.cab",
+      "size": "AUTO",
+      "sha256": "AUTO_GENERATE"
+    },
+    {
+      "name": "KB0001-11-25H2.cab",
+      "path": "./packages/KB0001-11-25H2.cab",
+      "size": "AUTO",
+      "sha256": "AUTO_GENERATE"
+    }
+  ],
+  "reporting": {
+    "logFile": "./reports/KB0001-11.log",
+    "status": "PENDING"
+  }
+}
