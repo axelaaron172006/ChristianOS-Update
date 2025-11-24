@@ -1,0 +1,31 @@
+{
+  "updateName": "ChristianOS Update KB0001",
+  "version": "1.0.0",
+  "type": "MSU",
+  "sha256": "AUTO_GENERATE",
+  "compatibility": {
+    "ChristianOS10": ["22H2", "24H2", "25H2"],
+    "ChristianOS11": ["22H2", "24H2", "25H2"]
+  },
+  "releaseDate": "2025-11-24",
+  "author": "ChristianOS Team",
+  "description": "Primer paquete de prueba para ChristianOS Update, con soporte CAB/MSU y validación avanzada.",
+  "files": [
+    {
+      "name": "KB0001.msu",
+      "path": "./packages/KB0001.msu",
+      "size": "AUTO",
+      "sha256": "AUTO_GENERATE"
+    },
+    {
+      "name": "KB0001.cab",
+      "path": "./packages/KB0001.cab",
+      "size": "AUTO",
+      "sha256": "AUTO_GENERATE"
+    }
+  ],
+  "reporting": {
+    "logFile": "./reports/KB0001.log",
+    "status": "PENDING"
+  }
+}
