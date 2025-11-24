@@ -1,0 +1,14 @@
+.OPTION EXPLICIT
+.Set CabinetNameTemplate=KB0001-11-24H2.cab
+.Set CompressionType=MSZIP
+.Set Cabinet=on
+.Set Compress=on
+.Set MaxDiskSize=0
+.Set DiskDirectoryTemplate=cab
+.Set RptFileName=cab\KB0001-11-24H2.rpt
+
+; Archivos a incluir (ruta relativa)
+payload\file1.dll
+payload\file2.cat
+payload\update.mum
+payload\update.cat
