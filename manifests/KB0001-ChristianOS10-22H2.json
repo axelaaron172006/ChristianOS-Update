@@ -1,5 +1,5 @@
 {
-  "updateName": "ChristianOS Update KB0001",
+  "updateName": "Actualización de calidad para ChritsianOS 10 22H2 para sistemas basados en x64.",
   "version": "1.0.0",
   "type": "MSU",
   "sha256": "AUTO_GENERATE",
@@ -7,8 +7,8 @@
     "ChristianOS10": ["22H2"]
   },
   "releaseDate": "2025-11-24",
-  "author": "ChristianOS Team",
-  "description": "Update KB0001 para ChristianOS 10 22H2.",
+  "author": "MicroChristian Corporation",
+  "description": "ChristianOS Update KB00001",
   "files": [
     {
       "name": "KB0001-10-22H2.msu",
