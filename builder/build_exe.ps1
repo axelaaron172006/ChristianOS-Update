@@ -23,12 +23,23 @@ if (-not $pyinstaller) {
 
 New-Item -ItemType Directory -Path $DistPath -Force | Out-Null
 
+$outputExe = Join-Path $DistPath ("$ExeName.exe")
+$altOutput = Join-Path $DistPath $ExeName
+
+foreach ($existingOutput in @($outputExe, $altOutput)) {
+    if (Test-Path -Path $existingOutput) {
+        Remove-Item -Path $existingOutput -Force
+    }
+}
+
 pyinstaller --noconfirm --clean --onefile --name "$ExeName" --distpath "$DistPath" "$EntryPoint"
 
-$outputExe = Join-Path $DistPath ("$ExeName.exe")
+if ($LASTEXITCODE -ne 0) {
+    throw "PyInstaller falló con código de salida $LASTEXITCODE"
+}
+
 if (-not (Test-Path -Path $outputExe)) {
     # En algunos entornos no-Windows pyinstaller puede generar binario sin extensión.
-    $altOutput = Join-Path $DistPath $ExeName
     if (Test-Path -Path $altOutput) {
         Move-Item -Path $altOutput -Destination $outputExe -Force
     }
