@@ -1,138 +1,132 @@
-diff --git a/README.md b/README.md
-index b007654a147bd9f90678739ea1a3387e964d49ea..6f786c33cc5d6fb11218b465fc26904b64c24824 100644
---- a/README.md
-+++ b/README.md
-@@ -1 +1,131 @@
--# ChristianOS-Update
-\ No newline at end of file
-+# ChristianOS-Update
-+
-+Proyecto base para construir y validar actualizaciones tipo *Windows Update* para ChristianOS.
-+
-+## Objetivo
-+
-+Este repositorio te permite:
-+
-+- Definir un manifiesto de actualización por versión de Windows (`22H2`, `24H2`, `25H2`, etc.).
-+- Validar archivos (`.cab` / `.msi` / `.msu`) con SHA256.
-+- Generar reportes de estado para cada KB.
-+- Usar IA (API de ChatGPT) para proponer y generar KBs en formato **MSI o CAB**.
-+- (Opcional) Actualizar automáticamente el manifiesto con tamaño/hash reales.
-+
-+## Estructura rápida
-+
-+- `manifests/`: metadatos de cada actualización.
-+- `src/UpdateNecesaryJSON.ps1`: script de validación y reporte.
-+- `src/generate_kb_with_ai.py`: generador de manifiestos con API de ChatGPT.
-+- `reports/`: salida de logs de ejecución.
-+- `builder/`: artefactos de construcción (CAB/MSU, DDF, payload).
-+
-+## Flujo recomendado para crear tu propio "Windows Update"
-+
-+1. Define las novedades de la release.
-+2. Genera manifiestos KB por versiones (`22H2`, `24H2`, `25H2...`) con IA.
-+3. Construye el paquete real (`.msi` o `.cab`) y colócalo en `./packages/`.
-+4. Ejecuta validación para calcular hashes/tamaños.
-+5. Publica la KB por versión.
-+
-+## Generar KB con IA (ChatGPT API)
-+
-+Configura tu API key (no la hardcodees en el repo):
-+
-+```bash
-+export OPENAI_API_KEY="tu_api_key"
-+# opcional
-+export OPENAI_MODEL="gpt-5-mini"
-+```
-+
-+### Un solo release
-+
-+```bash
-+python src/generate_kb_with_ai.py \
-+  --novedades "Correcciones de red, parche de seguridad y mejoras de estabilidad" \
-+  --product ChristianOS11 \
-+  --releases 25H2 \
-+  --kb KB0002
-+```
-+
-+### Múltiples releases (22H2, 24H2, 25H2)
-+
-+```bash
-+python src/generate_kb_with_ai.py \
-+  --novedades "Mejoras del sistema y estabilidad" \
-+  --product ChristianOS11 \
-+  --releases 22H2,24H2,25H2 \
-+  --kb KB0003
-+```
-+
-+Salida esperada:
-+
-+- Crea un manifiesto por versión de Windows en `manifests/`.
-+- Define `type` como `MSI` o `CAB` según recomendación de IA.
-+- Prepara nombre/ruta de paquete por release en `files[0]`.
-+
-+
-+
-+## Crear un Release en GitHub con archivo PS1
-+
-+Puedes publicar un release y adjuntar un `.ps1` (por ejemplo `UpdateNecesaryJSON.ps1`) con este script:
-+
-+```powershell
-+pwsh ./builder/create_github_release.ps1 `
-+  -Tag v1.0.0 `
-+  -Title "ChristianOS Update v1.0.0" `
-+  -Notes "Release de ChristianOS Update" `
-+  -AssetPath ./src/UpdateNecesaryJSON.ps1
-+```
-+
-+Opciones:
-+
-+- `-Draft` para crear borrador.
-+- `-Prerelease` para marcar pre-release.
-+
-+Requisitos:
-+
-+- GitHub CLI instalado (`gh`).
-+- Sesión iniciada con `gh auth login`.
-+- Permisos para crear releases en el repositorio.
-+
-+## Generar el EXE del generador IA
-+
-+Para generar el ejecutable del generador (`generate_kb_with_ai.py`) usa el script:
-+
-+```powershell
-+pwsh ./builder/build_exe.ps1
-+```
-+
-+Opciones útiles:
-+
-+```powershell
-+pwsh ./builder/build_exe.ps1 -ExeName ChristianOSUpdateAI -DistPath ./builder/exe
-+```
-+
-+Resultado esperado:
-+
-+- `./builder/exe/ChristianOSUpdateAI.exe`
-+
-+> Nota: la compilación real de `.exe` está pensada para Windows con `pyinstaller` instalado.
-+
-+## Validación del manifiesto y archivos
-+
-+Validar sin modificar el JSON:
-+
-+```powershell
-+pwsh ./src/UpdateNecesaryJSON.ps1 -ManifestPath ./manifests/KB0003-ChristianOS11-24H2.json
-+```
-+
-+Validar y actualizar JSON (`size`, `sha256`, `status`):
-+
-+```powershell
-+pwsh ./src/UpdateNecesaryJSON.ps1 -ManifestPath ./manifests/KB0003-ChristianOS11-24H2.json -UpdateManifest
-+```
-+
-+## Consejos para novedades de ChristianOS Update
-+
-+- Incrementa `version` cuando publiques una revisión nueva.
-+- Mantén `compatibility` exacto por release (`22H2`, `24H2`, `25H2`, etc.).
-+- Usa nombres consistentes por KB para evitar errores de despliegue.
-+- No publiques con `AUTO_GENERATE` si ya estás en release: sustituye hashes reales.
+# ChristianOS-Update
+# ChristianOS-Update
+
+Proyecto base para construir y validar actualizaciones tipo *Windows Update* para ChristianOS.
+
+## Objetivo
+
+Este repositorio te permite:
+
+- Definir un manifiesto de actualización por versión de Windows (`22H2`, `24H2`, `25H2`, etc.).
+- Validar archivos (`.cab` / `.msi` / `.msu`) con SHA256.
+- Generar reportes de estado para cada KB.
+- Usar IA (API de ChatGPT) para proponer y generar KBs en formato **MSI o CAB**.
+- (Opcional) Actualizar automáticamente el manifiesto con tamaño/hash reales.
+
+## Estructura rápida
+
+- `manifests/`: metadatos de cada actualización.
+- `src/UpdateNecesaryJSON.ps1`: script de validación y reporte.
+- `src/generate_kb_with_ai.py`: generador de manifiestos con API de ChatGPT.
+- `reports/`: salida de logs de ejecución.
+- `builder/`: artefactos de construcción (CAB/MSU, DDF, payload).
+
+## Flujo recomendado para crear tu propio "Windows Update"
+
+1. Define las novedades de la release.
+2. Genera manifiestos KB por versiones (`22H2`, `24H2`, `25H2...`) con IA.
+3. Construye el paquete real (`.msi` o `.cab`) y colócalo en `./packages/`.
+4. Ejecuta validación para calcular hashes/tamaños.
+5. Publica la KB por versión.
+
+## Generar KB con IA (ChatGPT API)
+
+Configura tu API key (no la hardcodees en el repo):
+
+```bash
+export OPENAI_API_KEY="tu_api_key"
+# opcional
+export OPENAI_MODEL="gpt-5-mini"
+```
+
+### Un solo release
+
+```bash
+python src/generate_kb_with_ai.py \
+  --novedades "Correcciones de red, parche de seguridad y mejoras de estabilidad" \
+  --product ChristianOS11 \
+  --releases 25H2 \
+  --kb KB0002
+```
+
+### Múltiples releases (22H2, 24H2, 25H2)
+
+```bash
+python src/generate_kb_with_ai.py \
+  --novedades "Mejoras del sistema y estabilidad" \
+  --product ChristianOS11 \
+  --releases 22H2,24H2,25H2 \
+  --kb KB0003
+```
+
+Salida esperada:
+
+- Crea un manifiesto por versión de Windows en `manifests/`.
+- Define `type` como `MSI` o `CAB` según recomendación de IA.
+- Prepara nombre/ruta de paquete por release en `files[0]`.
+
+
+
+## Crear un Release en GitHub con archivo PS1
+
+Puedes publicar un release y adjuntar un `.ps1` (por ejemplo `UpdateNecesaryJSON.ps1`) con este script:
+
+```powershell
+pwsh ./builder/create_github_release.ps1 `
+  -Tag v1.0.0 `
+  -Title "ChristianOS Update v1.0.0" `
+  -Notes "Release de ChristianOS Update" `
+  -AssetPath ./src/UpdateNecesaryJSON.ps1
+```
+
+Opciones:
+
+- `-Draft` para crear borrador.
+- `-Prerelease` para marcar pre-release.
+
+Requisitos:
+
+- GitHub CLI instalado (`gh`).
+- Sesión iniciada con `gh auth login`.
+- Permisos para crear releases en el repositorio.
+
+## Generar el EXE del generador IA
+
+Para generar el ejecutable del generador (`generate_kb_with_ai.py`) usa el script:
+
+```powershell
+pwsh ./builder/build_exe.ps1
+```
+
+Opciones útiles:
+
+```powershell
+pwsh ./builder/build_exe.ps1 -ExeName ChristianOSUpdateAI -DistPath ./builder/exe
+```
+
+Resultado esperado:
+
+- `./builder/exe/ChristianOSUpdateAI.exe`
+
+> Nota: la compilación real de `.exe` está pensada para Windows con `pyinstaller` instalado.
+
+## Validación del manifiesto y archivos
+
+Validar sin modificar el JSON:
+
+```powershell
+pwsh ./src/UpdateNecesaryJSON.ps1 -ManifestPath ./manifests/KB0003-ChristianOS11-24H2.json
+```
+
+Validar y actualizar JSON (`size`, `sha256`, `status`):
+
+```powershell
+pwsh ./src/UpdateNecesaryJSON.ps1 -ManifestPath ./manifests/KB0003-ChristianOS11-24H2.json -UpdateManifest
+```
+
+## Consejos para novedades de ChristianOS Update
+
+- Incrementa `version` cuando publiques una revisión nueva.
+- Mantén `compatibility` exacto por release (`22H2`, `24H2`, `25H2`, etc.).
+- Usa nombres consistentes por KB para evitar errores de despliegue.
+- No publiques con `AUTO_GENERATE` si ya estás en release: sustituye hashes reales.
