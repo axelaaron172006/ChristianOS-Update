@@ -1,3 +1,5 @@
+# Cargar manifiesto
+$manifest = Get-Content "./manifests/KB0001-ChristianOS11.json" | ConvertFrom-Json
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $false)]
@@ -20,7 +22,9 @@ if (-not $manifest.reporting.logFile) {
     throw "El manifiesto no contiene reporting.logFile"
 }
 
+# Crear log
 $logPath = $manifest.reporting.logFile
+"ChristianOS Update Report - $($manifest.updateName)" | Out-File $logPath
 $logDir = Split-Path -Path $logPath -Parent
 if ($logDir -and -not (Test-Path -Path $logDir)) {
     New-Item -Path $logDir -ItemType Directory -Force | Out-Null
@@ -85,9 +89,13 @@ else {
     "Estado: ✅ VALIDATED" | Out-File -FilePath $logPath -Append -Encoding UTF8
 }
 
+foreach ($file in $manifest.files) {
+    $sha = Get-FileHash $file.path -Algorithm SHA256
+    "[$(Get-Date)] $($file.name) → SHA256: $($sha.Hash)" | Out-File $logPath -Append
 if ($UpdateManifest) {
     $manifest | ConvertTo-Json -Depth 8 | Out-File -FilePath $ManifestPath -Encoding UTF8
     "Manifest actualizado: ✅ $ManifestPath" | Out-File -FilePath $logPath -Append -Encoding UTF8
 }
 
+"Estado: ✅ Validado" | Out-File $logPath -Append
 Write-Host "Validación terminada. Log: $logPath"
