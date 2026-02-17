@@ -1,5 +1,4 @@
 # ChristianOS-Update
-# ChristianOS-Update
 
 Proyecto base para construir y validar actualizaciones tipo *Windows Update* para ChristianOS.
 
